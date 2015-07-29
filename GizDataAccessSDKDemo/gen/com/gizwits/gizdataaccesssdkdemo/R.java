@@ -8,72 +8,80 @@
 package com.gizwits.gizdataaccesssdkdemo;
 
 public final class R {
+    public static final class array {
+        public static final int arr_datetype=0x7f040001;
+        public static final int arr_mathtype=0x7f040000;
+    }
     public static final class attr {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_anonychange2mail=0x7f07003b;
-        public static final int action_anonychange2phone=0x7f07003a;
-        public static final int action_change2mail=0x7f070039;
-        public static final int action_change2phone=0x7f070038;
-        public static final int action_changePsw=0x7f070037;
-        public static final int action_logout=0x7f070036;
-        public static final int action_register=0x7f070034;
-        public static final int action_reset=0x7f070035;
-        public static final int btnCancle=0x7f070002;
-        public static final int btnChange=0x7f070001;
-        public static final int btnClean=0x7f070032;
-        public static final int btnLoad=0x7f07002f;
-        public static final int btnLogin=0x7f07000b;
-        public static final int btnLoginAnonymous=0x7f070008;
-        public static final int btnRegist=0x7f070015;
-        public static final int btnRequestCode=0x7f070005;
-        public static final int btnSave=0x7f07001e;
-        public static final int btnStartLoad=0x7f07002d;
-        public static final int btnThird=0x7f070012;
-        public static final int buttonLayout=0x7f07002e;
-        public static final int etCode=0x7f070004;
-        public static final int etDay=0x7f070018;
-        public static final int etDayEnd=0x7f070027;
-        public static final int etDayStart=0x7f070021;
-        public static final int etHour=0x7f070019;
-        public static final int etHourEnd=0x7f070028;
-        public static final int etHourStart=0x7f070022;
-        public static final int etJson=0x7f07001d;
-        public static final int etLimit=0x7f07002b;
-        public static final int etMail=0x7f070000;
-        public static final int etMin=0x7f07001a;
-        public static final int etMinEnd=0x7f070029;
-        public static final int etMinStart=0x7f070023;
-        public static final int etMon=0x7f070017;
-        public static final int etMonEnd=0x7f070026;
-        public static final int etMonStart=0x7f070020;
-        public static final int etNewPsw=0x7f070007;
-        public static final int etOldPsw=0x7f070006;
-        public static final int etPassword=0x7f070014;
-        public static final int etPhone=0x7f070003;
-        public static final int etSec=0x7f07001b;
-        public static final int etSecEnd=0x7f07002a;
-        public static final int etSecStart=0x7f070024;
-        public static final int etSkip=0x7f07002c;
-        public static final int etTimes=0x7f07001c;
-        public static final int etUsername=0x7f070013;
-        public static final int etYear=0x7f070016;
-        public static final int etYearEnd=0x7f070025;
-        public static final int etYearStart=0x7f07001f;
-        public static final int et_password=0x7f07000a;
-        public static final int et_token=0x7f070011;
-        public static final int et_uid=0x7f070010;
-        public static final int et_username=0x7f070009;
-        public static final int rb_baidu=0x7f07000d;
-        public static final int rb_qq=0x7f07000f;
-        public static final int rb_sina=0x7f07000e;
-        public static final int rg_thirdAccount=0x7f07000c;
-        public static final int terminalLayout=0x7f070031;
-        public static final int tvTerminal=0x7f070033;
-        public static final int tvVersion=0x7f070030;
+        public static final int action_anonychange2mail=0x7f08003f;
+        public static final int action_anonychange2phone=0x7f08003e;
+        public static final int action_change2mail=0x7f08003d;
+        public static final int action_change2phone=0x7f08003c;
+        public static final int action_changePsw=0x7f08003b;
+        public static final int action_logout=0x7f08003a;
+        public static final int action_register=0x7f080038;
+        public static final int action_reset=0x7f080039;
+        public static final int btnCancle=0x7f080002;
+        public static final int btnChange=0x7f080001;
+        public static final int btnClean=0x7f080036;
+        public static final int btnGroup=0x7f080033;
+        public static final int btnLoad=0x7f080032;
+        public static final int btnLogin=0x7f08000b;
+        public static final int btnLoginAnonymous=0x7f080008;
+        public static final int btnRegist=0x7f080015;
+        public static final int btnRequestCode=0x7f080005;
+        public static final int btnSave=0x7f08001e;
+        public static final int btnStartLoad=0x7f08002e;
+        public static final int btnThird=0x7f080012;
+        public static final int buttonLayout=0x7f080031;
+        public static final int etAttr=0x7f08002b;
+        public static final int etCode=0x7f080004;
+        public static final int etDay=0x7f080018;
+        public static final int etDayEnd=0x7f080027;
+        public static final int etDayStart=0x7f080021;
+        public static final int etHour=0x7f080019;
+        public static final int etHourEnd=0x7f080028;
+        public static final int etHourStart=0x7f080022;
+        public static final int etJson=0x7f08001d;
+        public static final int etLimit=0x7f08002f;
+        public static final int etMail=0x7f080000;
+        public static final int etMin=0x7f08001a;
+        public static final int etMinEnd=0x7f080029;
+        public static final int etMinStart=0x7f080023;
+        public static final int etMon=0x7f080017;
+        public static final int etMonEnd=0x7f080026;
+        public static final int etMonStart=0x7f080020;
+        public static final int etNewPsw=0x7f080007;
+        public static final int etOldPsw=0x7f080006;
+        public static final int etPassword=0x7f080014;
+        public static final int etPhone=0x7f080003;
+        public static final int etSec=0x7f08001b;
+        public static final int etSecEnd=0x7f08002a;
+        public static final int etSecStart=0x7f080024;
+        public static final int etSkip=0x7f080030;
+        public static final int etTimes=0x7f08001c;
+        public static final int etUsername=0x7f080013;
+        public static final int etYear=0x7f080016;
+        public static final int etYearEnd=0x7f080025;
+        public static final int etYearStart=0x7f08001f;
+        public static final int et_password=0x7f08000a;
+        public static final int et_token=0x7f080011;
+        public static final int et_uid=0x7f080010;
+        public static final int et_username=0x7f080009;
+        public static final int rb_baidu=0x7f08000d;
+        public static final int rb_qq=0x7f08000f;
+        public static final int rb_sina=0x7f08000e;
+        public static final int rg_thirdAccount=0x7f08000c;
+        public static final int spDateType=0x7f08002d;
+        public static final int spMathtype=0x7f08002c;
+        public static final int terminalLayout=0x7f080035;
+        public static final int tvTerminal=0x7f080037;
+        public static final int tvVersion=0x7f080034;
     }
     public static final class layout {
         public static final int activity_change_mail=0x7f030000;
@@ -85,33 +93,34 @@ public final class R {
         public static final int activity_save=0x7f030006;
         public static final int activity_trans_mail=0x7f030007;
         public static final int activity_trans_phone=0x7f030008;
-        public static final int dialog_time=0x7f030009;
-        public static final int main=0x7f03000a;
+        public static final int dialog_group=0x7f030009;
+        public static final int dialog_time=0x7f03000a;
+        public static final int main=0x7f03000b;
     }
     public static final class menu {
-        public static final int login_menu=0x7f060000;
-        public static final int main_menu=0x7f060001;
+        public static final int login_menu=0x7f070000;
+        public static final int main_menu=0x7f070001;
     }
     public static final class string {
-        public static final int action_anonychange2mail=0x7f040008;
-        public static final int action_anonychange2phone=0x7f040007;
-        public static final int action_change2mail=0x7f040006;
-        public static final int action_change2phone=0x7f040005;
-        public static final int action_changePsw=0x7f040004;
-        public static final int action_logout=0x7f040003;
-        public static final int action_register=0x7f040001;
-        public static final int action_reset=0x7f040002;
-        public static final int app_name=0x7f040000;
-        public static final int text_code=0x7f040010;
-        public static final int text_mail=0x7f04000c;
-        public static final int text_newpasscode=0x7f04000f;
-        public static final int text_oldpasscode=0x7f04000e;
-        public static final int text_passcode=0x7f04000d;
-        public static final int text_phone=0x7f04000b;
-        public static final int text_token=0x7f040012;
-        public static final int text_uid=0x7f040011;
-        public static final int text_username=0x7f040009;
-        public static final int text_username_mail=0x7f04000a;
+        public static final int action_anonychange2mail=0x7f050008;
+        public static final int action_anonychange2phone=0x7f050007;
+        public static final int action_change2mail=0x7f050006;
+        public static final int action_change2phone=0x7f050005;
+        public static final int action_changePsw=0x7f050004;
+        public static final int action_logout=0x7f050003;
+        public static final int action_register=0x7f050001;
+        public static final int action_reset=0x7f050002;
+        public static final int app_name=0x7f050000;
+        public static final int text_code=0x7f050010;
+        public static final int text_mail=0x7f05000c;
+        public static final int text_newpasscode=0x7f05000f;
+        public static final int text_oldpasscode=0x7f05000e;
+        public static final int text_passcode=0x7f05000d;
+        public static final int text_phone=0x7f05000b;
+        public static final int text_token=0x7f050012;
+        public static final int text_uid=0x7f050011;
+        public static final int text_username=0x7f050009;
+        public static final int text_username_mail=0x7f05000a;
     }
     public static final class style {
         /** 
@@ -135,10 +144,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f060001;
     }
 }

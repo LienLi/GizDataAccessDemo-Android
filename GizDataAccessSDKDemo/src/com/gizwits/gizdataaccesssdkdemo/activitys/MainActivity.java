@@ -17,6 +17,7 @@
  */
 package com.gizwits.gizdataaccesssdkdemo.activitys;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -44,6 +45,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -51,6 +53,8 @@ import android.widget.Toast;
 import com.gizwits.gizdataaccess.GizDataAccess;
 import com.gizwits.gizdataaccess.GizDataAccessLogin;
 import com.gizwits.gizdataaccess.GizDataAccessSource;
+import com.gizwits.gizdataaccess.entity.GizDataAccessAggregatorType;
+import com.gizwits.gizdataaccess.entity.GizDataAccessDateTimeUnit;
 import com.gizwits.gizdataaccess.entity.GizDataAccessErrorCode;
 import com.gizwits.gizdataaccess.listener.GizDataAccessLoginListener;
 import com.gizwits.gizdataaccess.listener.GizDataAccessSourceListener;
@@ -89,14 +93,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	/** The btn clean. */
 	Button btnClean;
 
+	/** The btn group. */
+	Button btnGroup;
+
 	/** The btn start load. */
 	Button btnStartLoad;
+	/** The btn start load. */
+	Button btnGroupStartLoad;
 
 	/** The buffer. */
 	StringBuffer buffer;
 
 	/** The dialog. */
 	Dialog dialog;
+
+	/** The group dialog. */
+	Dialog groupDialog;
 
 	/** The et sec start. */
 	EditText etYearStart, etMonStart, etDayStart, etHourStart, etMinStart,
@@ -105,14 +117,25 @@ public class MainActivity extends Activity implements OnClickListener {
 	/** The et sec end. */
 	EditText etYearEnd, etMonEnd, etDayEnd, etHourEnd, etMinEnd, etSecEnd;
 
+	EditText etGroupYearStart, etGroupMonStart, etGroupDayStart,
+			etGroupHourStart, etGroupMinStart, etGroupSecStart;
+
+	EditText etGroupYearEnd, etGroupMonEnd, etGroupDayEnd, etGroupHourEnd,
+			etGroupMinEnd, etGroupSecEnd;
 	/** The et skip. */
 	EditText etLimit, etSkip;
+	EditText etAttr;
+
+	Spinner spMathType, spDateType;
 
 	/** The load start time. */
 	long loadStartTime;
 
 	/** The load end time. */
 	long loadEndTime;
+
+	int screenWidth;
+	int screenHeight;
 
 	private GizDataAccessSourceListener accessSourceListener = new GizDataAccessSourceListener() {
 		/*
@@ -154,6 +177,37 @@ public class MainActivity extends Activity implements OnClickListener {
 			tvTerminal.setText(buffer.toString());
 		}
 
+		public void didRetrieveAggregatedData(GizDataAccessSource source,
+				JSONArray data, JSONObject queryRequest,
+				GizDataAccessErrorCode result, String message) {
+			if (result.getResult() == 0) {
+				if (data != null) {
+					buffer.append(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+					for (int i = 0; i < data.length(); i++) {
+						try {
+							JSONObject jsonObject = data.getJSONObject(i);
+							buffer.append("attrs:"
+									+ jsonObject.get("attrs").toString() + "\n");
+							buffer.append("datetime:"
+									+ jsonObject
+											.getLong("datetime") + "\n");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				} else {
+					buffer.append(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+					buffer.append("暂无数据");
+
+				}
+			} else {
+				buffer.append(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+				buffer.append("读取失败：" + message);
+			}
+			tvTerminal.setText(buffer.toString());
+			
+		};
+
 	};
 
 	/*
@@ -171,14 +225,22 @@ public class MainActivity extends Activity implements OnClickListener {
 		btnLoad = (Button) findViewById(R.id.btnLoad);
 		btnSave = (Button) findViewById(R.id.btnSave);
 		btnClean = (Button) findViewById(R.id.btnClean);
+		btnGroup = (Button) findViewById(R.id.btnGroup);
 		tvVersion = (TextView) findViewById(R.id.tvVersion);
 		buffer = new StringBuffer();
 		tvTerminal.setText(buffer.toString());
 		btnLoad.setOnClickListener(this);
 		btnSave.setOnClickListener(this);
 		btnClean.setOnClickListener(this);
+		btnGroup.setOnClickListener(this);
+		DisplayMetrics dm = new DisplayMetrics();
+		dm = this.getResources().getDisplayMetrics();
+		screenWidth = dm.widthPixels;
+		screenHeight = dm.heightPixels;
 		dialog = dateTimePicKDialog();
+		groupDialog = groupPickDialog();
 		tvVersion.setText("SDK版本号:" + GizDataAccess.getVersion());
+
 	}
 
 	/*
@@ -198,6 +260,15 @@ public class MainActivity extends Activity implements OnClickListener {
 						.show();
 			}
 			break;
+		case R.id.btnGroup:
+			if (NetworkUtils.isNetworkConnected(MainActivity.this)) {
+				groupDialog.show();
+			} else {
+				Toast.makeText(MainActivity.this, "网络已断开", Toast.LENGTH_SHORT)
+						.show();
+			}
+			break;
+
 		case R.id.btnSave:
 			Intent intent = new Intent(MainActivity.this, SaveActivity.class);
 			startActivity(intent);
@@ -206,6 +277,85 @@ public class MainActivity extends Activity implements OnClickListener {
 			buffer.setLength(0);
 			tvTerminal.setText(buffer.toString());
 			break;
+		}
+
+	}
+
+	private void loadGroupData() {
+		String strYearStart = etGroupYearStart.getText().toString();
+		String strMonStart = etGroupMonStart.getText().toString();
+		String strDayStart = etGroupDayStart.getText().toString();
+		String strHourStart = etGroupHourStart.getText().toString();
+		String strMinStart = etGroupMinStart.getText().toString();
+		String strSecStart = etGroupSecStart.getText().toString();
+		String strYearEnd = etGroupYearEnd.getText().toString();
+		String strMonEnd = etGroupMonEnd.getText().toString();
+		String strDayEnd = etGroupDayEnd.getText().toString();
+		String strHourEnd = etGroupHourEnd.getText().toString();
+		String strMinEnd = etGroupMinEnd.getText().toString();
+		String strSecEnd = etGroupSecEnd.getText().toString();
+		String strAttrs = etAttr.getText().toString();
+		List<String> attrlist = Arrays.asList(strAttrs.split(","));
+		GizDataAccessAggregatorType accessAggregatorType;
+		GizDataAccessDateTimeUnit accessDateTimeUnit;
+		switch (spDateType.getSelectedItemPosition()) {
+		case 0:
+			accessDateTimeUnit = GizDataAccessDateTimeUnit.kGizDataAccessDateTimeUnitHours;
+			break;
+		case 1:
+			accessDateTimeUnit = GizDataAccessDateTimeUnit.kGizDataAccessDateTimeUnitDays;
+			break;
+		case 2:
+			accessDateTimeUnit = GizDataAccessDateTimeUnit.kGizDataAccessDateTimeUnitWeeks;
+			break;
+		default:
+			accessDateTimeUnit = GizDataAccessDateTimeUnit.kGizDataAccessDateTimeUnitMonths;
+			break;
+		}
+		switch (spMathType.getSelectedItemPosition()) {
+		case 0:
+			accessAggregatorType = GizDataAccessAggregatorType.kGizDataAccessAggregatorTypeSum;
+			break;
+		case 1:
+			accessAggregatorType = GizDataAccessAggregatorType.kGizDataAccessAggregatorTypeAvg;
+			break;
+		case 2:
+			accessAggregatorType = GizDataAccessAggregatorType.kGizDataAccessAggregatorTypeMax;
+			break;
+		default:
+			accessAggregatorType = GizDataAccessAggregatorType.kGizDataAccessAggregatorTypeMin;
+			break;
+		}
+		if (isEmpty(strYearStart) || isEmpty(strMonStart)
+				|| isEmpty(strDayStart) || isEmpty(strHourStart)
+				|| isEmpty(strMinStart) || isEmpty(strSecStart)) {
+			Toast.makeText(MainActivity.this, "请输入正确的开始时间", Toast.LENGTH_SHORT)
+					.show();
+		} else if (isEmpty(strYearEnd) || isEmpty(strMonEnd)
+				|| isEmpty(strDayEnd) || isEmpty(strHourEnd)
+				|| isEmpty(strMinEnd) || isEmpty(strSecEnd)) {
+			Toast.makeText(MainActivity.this, "请输入正确的结束时间", Toast.LENGTH_SHORT)
+					.show();
+		} else {
+			loadStartTime = DateUtils.getStringToDate(strYearStart
+					+ strMonStart + strDayStart + strHourStart + strMinStart
+					+ strSecStart + "0000");
+			loadEndTime = DateUtils.getStringToDate(strYearEnd + strMonEnd
+					+ strDayEnd + strHourEnd + strMinEnd + strSecEnd + "0000");
+			Log.i("loadData", "timeStartlong=" + loadStartTime);
+			Log.i("loadData",
+					"timeStartstr=" + DateUtils.getDateToString(loadStartTime));
+			Log.i("loadData", "timeEndlong=" + loadEndTime);
+			Log.i("loadData",
+					"timeEndstr=" + DateUtils.getDateToString(loadEndTime));
+			new GizDataAccessSource(accessSourceListener)
+					.retrieveAggregatedData(Constant.TOKEN,
+							Constant.PRODUCTKEY, Constant.DEVICE_SN,
+							loadStartTime, loadEndTime, attrlist,
+							accessAggregatorType, accessDateTimeUnit);
+			if (groupDialog != null && groupDialog.isShowing()) {
+				groupDialog.dismiss();
+			}
 		}
 
 	}
@@ -256,12 +406,61 @@ public class MainActivity extends Activity implements OnClickListener {
 					"timeEndstr=" + DateUtils.getDateToString(loadEndTime));
 			new GizDataAccessSource(accessSourceListener).loadData(
 					Constant.TOKEN, Constant.PRODUCTKEY, Constant.DEVICE_SN,
-					loadStartTime, loadEndTime, limit, skip);
+					loadStartTime, loadEndTime, null, limit, skip);
 			if (dialog != null && dialog.isShowing()) {
 				dialog.dismiss();
 			}
 		}
 
+	}
+
+	public Dialog groupPickDialog() {
+
+		LinearLayout dateTimeLayout = (LinearLayout) this.getLayoutInflater()
+				.inflate(R.layout.dialog_group, null);
+		etGroupYearStart = (EditText) dateTimeLayout
+				.findViewById(R.id.etYearStart);
+		etGroupYearEnd = (EditText) dateTimeLayout.findViewById(R.id.etYearEnd);
+		etGroupMonStart = (EditText) dateTimeLayout
+				.findViewById(R.id.etMonStart);
+		etGroupMonEnd = (EditText) dateTimeLayout.findViewById(R.id.etMonEnd);
+		etGroupDayStart = (EditText) dateTimeLayout
+				.findViewById(R.id.etDayStart);
+		etGroupDayEnd = (EditText) dateTimeLayout.findViewById(R.id.etDayEnd);
+		etGroupHourStart = (EditText) dateTimeLayout
+				.findViewById(R.id.etHourStart);
+		etGroupHourEnd = (EditText) dateTimeLayout.findViewById(R.id.etHourEnd);
+		etGroupMinStart = (EditText) dateTimeLayout
+				.findViewById(R.id.etMinStart);
+		etGroupMinEnd = (EditText) dateTimeLayout.findViewById(R.id.etMinEnd);
+		etGroupSecStart = (EditText) dateTimeLayout
+				.findViewById(R.id.etSecStart);
+		etGroupSecEnd = (EditText) dateTimeLayout.findViewById(R.id.etSecEnd);
+		btnGroupStartLoad = (Button) dateTimeLayout
+				.findViewById(R.id.btnStartLoad);
+		btnGroupStartLoad.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				loadGroupData();
+
+			}
+		});
+		etAttr = (EditText) dateTimeLayout.findViewById(R.id.etAttr);
+		spDateType = (Spinner) dateTimeLayout.findViewById(R.id.spDateType);
+		spMathType = (Spinner) dateTimeLayout.findViewById(R.id.spMathtype);
+		groupDialog = new Dialog(this);
+		// groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		WindowManager.LayoutParams params = groupDialog.getWindow()
+				.getAttributes();
+		// params.width = (int) (screenWidth * 0.8);
+		// params.height = screenHeight / 5;
+		params.width = (int) (screenWidth * 0.8);
+		params.height = (int) (screenHeight * 0.8);
+		groupDialog.getWindow().setAttributes(params);
+		groupDialog.setCanceledOnTouchOutside(false);
+		groupDialog.setContentView(dateTimeLayout);
+		return groupDialog;
 	}
 
 	/**
@@ -270,10 +469,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	 * @return the dialog
 	 */
 	public Dialog dateTimePicKDialog() {
-		DisplayMetrics dm = new DisplayMetrics();
-		dm = this.getResources().getDisplayMetrics();
-		int screenWidth = dm.widthPixels;
-		int screenHeight = dm.heightPixels;
 		LinearLayout dateTimeLayout = (LinearLayout) this.getLayoutInflater()
 				.inflate(R.layout.dialog_time, null);
 
@@ -302,9 +497,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		});
 
 		dialog = new Dialog(this);
+		// dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-		params.width = (int) (screenWidth * 0.8);
-		params.height = screenHeight / 5;
+		// params.width = (int) (screenWidth * 0.8);
+		// params.height = screenHeight / 5;
 		params.width = (int) (screenWidth * 0.8);
 		params.height = (int) (screenHeight * 0.8);
 		dialog.getWindow().setAttributes(params);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arr_mathtype">
+        <item>求和</item>
+        <item>求平均值</item>
+        <item>求最大值</item>
+        <item>求最小值</item>
+    </string-array>
+    
+    <string-array name="arr_datetype">
+        <item>小时</item>
+        <item>天</item>
+        <item>星期</item>
+        <item>月</item>
+    </string-array>
+</resources>
