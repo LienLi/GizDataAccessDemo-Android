@@ -348,8 +348,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			Log.i("loadData", "timeEndlong=" + loadEndTime);
 			Log.i("loadData",
 					"timeEndstr=" + DateUtils.getDateToString(loadEndTime));
-			new GizDataAccessSource(accessSourceListener)
-					.retrieveAggregatedData(Constant.TOKEN,
+			new GizDataAccessSource(accessSourceListener).retrieveAggregatedData(Constant.TOKEN,
 							Constant.PRODUCTKEY, Constant.DEVICE_SN,
 							loadStartTime, loadEndTime, attrlist,
 							accessAggregatorType, accessDateTimeUnit);
